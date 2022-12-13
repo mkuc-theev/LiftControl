@@ -3,22 +3,24 @@ package com.michal.kuc.liftctl.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
+
 @Document(collection = "lift-statuses")
 public class CarriageStatus {
     @Id
-    private Integer id;
+    private BigInteger id;
     private Integer currentFloor;
     private Integer targetFloor;
 
     public CarriageStatus() {}
 
-    public CarriageStatus(Integer id, Integer currentFloor, Integer targetFloor) {
+    public CarriageStatus(BigInteger id, Integer currentFloor, Integer targetFloor) {
         this.id = id;
         this.currentFloor = currentFloor;
         this.targetFloor = targetFloor;
     }
 
-    public Integer getId() {
+    public BigInteger getId() {
         return id;
     }
 
