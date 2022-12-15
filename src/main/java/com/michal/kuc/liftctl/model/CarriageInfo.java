@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
 
+/**
+ * Entity class for MongoRepository, allows for persistence of elevator IDs and names in case of system shutdown
+ */
 @Document(collection = "lift-statuses")
 public class CarriageInfo {
     @Id

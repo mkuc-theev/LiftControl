@@ -13,30 +13,31 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Implementation of the carriage info service
+ */
 @Service
-public class CarriageInfoServiceImpl implements CarriageInfoService {
+public class RepositoryService {
     @Autowired
     CarriageInfoRepository carriageInfoRepository;
     @Autowired
     MongoOperations mongoOps;
 
-    @Override
+
     public CarriageInfo addCarriage(CarriageInfo carriageInfo) {
         return carriageInfoRepository.save(carriageInfo);
     }
 
-    @Override
+
     public List<CarriageInfo> getAllCarriages() {
         return carriageInfoRepository.findAll();
     }
 
-    @Override
+
     public Optional<CarriageInfo> getCarriageById(BigInteger id) {
         return carriageInfoRepository.findById(id);
     }
 
-    @Override
     public CarriageInfo updateCarriageById(BigInteger id, CarriageInfo carriageInfo) {
         Query query = new Query().addCriteria(Criteria.where("_id").is(id));
         Update updateDefinition = new Update()
@@ -46,12 +47,11 @@ public class CarriageInfoServiceImpl implements CarriageInfoService {
         return mongoOps.findAndModify(query, updateDefinition, options, CarriageInfo.class);
     }
 
-    @Override
     public void removeCarriageById(BigInteger id) {
         carriageInfoRepository.deleteById(id);
     }
 
-    @Override
+
     public void removeAllCarriages() {
         carriageInfoRepository.deleteAll();
     }
