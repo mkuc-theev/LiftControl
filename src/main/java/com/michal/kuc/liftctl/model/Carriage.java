@@ -7,7 +7,6 @@ import static com.michal.kuc.liftctl.model.Direction.DOWN;
 import static com.michal.kuc.liftctl.model.Direction.UP;
 
 
-
 public class Carriage {
     private final BigInteger id;
     private String name;
@@ -48,6 +47,11 @@ public class Carriage {
         }
     }
 
+    /**
+     * @param floor
+     * @param direction
+     * @return
+     */
     public Boolean call(Integer floor, Direction direction) {
         if (targetFloors.size() != 0) {
             Direction currentDirection = calculateDirection();
@@ -89,6 +93,11 @@ public class Carriage {
         }
 
     }
+
+    /**
+     * Provides the current status of the carriage
+     * @return String containing carriage ID, name and positional status
+     */
     public String status() {
         return String.format("Carriage: ID=%d, name=%s, status=(%d, %s)", id, name, currentFloor, targetFloors);
     }

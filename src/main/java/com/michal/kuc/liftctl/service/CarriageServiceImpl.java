@@ -31,7 +31,7 @@ public class CarriageServiceImpl implements CarriageService {
             executeCall(call);
         }
         for (Carriage car : carriages) {
-            step();
+            car.step();
         }
     }
 
