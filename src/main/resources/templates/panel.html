@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>LiftControl panel</title>
+    <link href="https://fonts.googleapis.com/css?family=Catamaran" rel="stylesheet" />
+    <link th:href="@{/css/stylesheet.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="main-container">
+        <div class="control-container">
+
+        </div>
+        <div class="carriage-container">
+            <div class="carriage" th:each="car : ${carriages}">
+                <b><span th:text="${car.getName()}">Carriage name</span></b><br />
+                <span>Current floor: </span>
+                <span th:text="${car.getCurrentFloor()}">Current floor</span>
+                <span>Current queue status: </span><br />
+                <span th:text="${car.getTargetFloors()}">Current queue status</span><br />
+                <form  action="#" th:action="@{/{id}(id=${car.getId()})}" th:object="${carFormData}" method="post">
+                    <input type="text" th:field="*{name}" />
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

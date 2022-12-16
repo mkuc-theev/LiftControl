@@ -1,0 +1,41 @@
+html {
+    background-color: #202020;
+    font-family: Catamaran;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    background-color: #707070;
+    border-radius: 0.5vw;
+    display: flex;
+    margin: 1vw;
+}
+
+.controls-container {
+    width: 45vw;
+    height: auto;
+    margin: auto;
+}
+
+.carriages-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 45vw;
+    height: auto;
+    margin: auto;
+}
+
+.carriage {
+    width: 9vw;
+    max-height: 9vw;
+    height: fit-content;
+    margin: 0.5vw;
+    background-color: #3f3f3f;
+}
+
+.button {
+    background-color: #FFDF6C;
+    border-radius: 100vw;
+}

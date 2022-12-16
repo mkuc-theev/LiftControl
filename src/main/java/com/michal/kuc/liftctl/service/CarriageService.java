@@ -13,13 +13,16 @@ public class CarriageService {
     private final List<Carriage> carriages = new ArrayList<>();
     private final Queue<CallParams> callParamsQueue = new LinkedList<>();
 
-    public Optional<Carriage> getCarriageById(BigInteger id) {
-        for (Carriage car : carriages) {
-            if (car.getId().equals(id)) {
-                return Optional.of(car);
-            }
+    public void initialize(List<CarriageInfo> carriageInfos) {
+        removeAllCarriages();
+        for (CarriageInfo carInfo : carriageInfos) {
+            addCarriage(carInfo);
         }
-        return Optional.empty();
+        System.out.println("Found: " + carriages);
+    }
+
+    public void call(CallParams callParams) {
+        callParamsQueue.add(callParams);
     }
 
     public List<Carriage> getAllCarriages() {
@@ -31,7 +34,6 @@ public class CarriageService {
         carriages.add(carriage);
         return carriage;
     }
-
 
     public void removeCarriage(BigInteger id) {
         carriages.removeIf(carriage -> Objects.equals(id, carriage.getId()));

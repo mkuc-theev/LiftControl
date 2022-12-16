@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
 /**
  * Implementation of the carriage info service
  */
@@ -33,10 +32,6 @@ public class RepositoryService {
         return carriageInfoRepository.findAll();
     }
 
-
-    public Optional<CarriageInfo> getCarriageById(BigInteger id) {
-        return carriageInfoRepository.findById(id);
-    }
 
     public CarriageInfo updateCarriageById(BigInteger id, CarriageInfo carriageInfo) {
         Query query = new Query().addCriteria(Criteria.where("_id").is(id));

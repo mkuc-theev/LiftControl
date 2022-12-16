@@ -1,5 +1,6 @@
 package com.michal.kuc.liftctl.service;
 
+import com.michal.kuc.liftctl.model.CallParams;
 import com.michal.kuc.liftctl.model.Carriage;
 import com.michal.kuc.liftctl.model.CarriageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,21 @@ public class MiddlemanService {
         return new ResponseEntity<>("New lift carriage with id " + id + " created.", HttpStatus.CREATED);
     }
 
-    public List<Carriage> getAllCarriages() {
-        return carriageService.getAllCarriages();
+    public void initialize() {
+        System.out.println("Initializing...");
+        carriageService.initialize(repositoryService.getAllCarriages());
     }
 
-    public Carriage getCarriageById(BigInteger id) {
-        return carriageService.getCarriageById(id).get();
+    public void step() {
+        carriageService.step();
+    }
+
+    public void call(CallParams callParams) {
+        carriageService.call(callParams);
+    }
+
+    public List<Carriage> getAllCarriages() {
+        return carriageService.getAllCarriages();
     }
 
     public Carriage updateCarriageById(BigInteger id, CarriageInfo carriageInfo) {

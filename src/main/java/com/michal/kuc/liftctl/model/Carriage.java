@@ -36,6 +36,14 @@ public class Carriage {
         return id;
     }
 
+    public Integer getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public ElevatorQueue getTargetFloors() {
+        return targetFloors;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
