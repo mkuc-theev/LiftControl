@@ -116,14 +116,14 @@ public class Carriage {
         Direction direction = calculateDirection();
         if (direction.equals(UP)) {
             if (floor.getFloor() < currentFloor) {
-                targetFloors.add(targetFloors.size()-1, floor.getFloor());
+                targetFloors.add(targetFloors.size(), floor.getFloor());
                 return;
             }
             insertFloor(floor.getFloor(), direction);
         }
         if (direction.equals(DOWN)){
             if (floor.getFloor() > currentFloor) {
-                targetFloors.add(targetFloors.size()-1, floor.getFloor());
+                targetFloors.add(targetFloors.size(), floor.getFloor());
                 return;
             }
             insertFloor(floor.getFloor(), direction);
@@ -140,7 +140,6 @@ public class Carriage {
     }
 
     private Direction calculateDirection() {
-        System.out.println(targetFloors);
         return targetFloors.get(0) > currentFloor ? UP : DOWN;
     }
 
@@ -155,7 +154,7 @@ public class Carriage {
                 }
                 lastCheckedFloor = targetFloors.get(i);
             }
-            targetFloors.add(targetFloors.size()-1, item);
+            targetFloors.add(targetFloors.size(), item);
         } else {
             lastCheckedFloor = Integer.MIN_VALUE;
             for (int i = 0; i < targetFloors.size(); i++) {
@@ -165,7 +164,7 @@ public class Carriage {
                 }
                 lastCheckedFloor = targetFloors.get(i);
             }
-            targetFloors.add(targetFloors.size()-1, item);
+            targetFloors.add(targetFloors.size(), item);
         }
     }
 }
