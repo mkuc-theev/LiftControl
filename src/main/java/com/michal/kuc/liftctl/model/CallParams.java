@@ -15,4 +15,17 @@ public class CallParams {
     public Integer getFloor() {
         return floor;
     }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setFloor(Integer floor) {
+        this.floor = floor;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Floor: %d, Direction: %s", floor, direction);
+    }
 }

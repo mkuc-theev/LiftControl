@@ -3,9 +3,8 @@ package com.michal.kuc.liftctl.service;
 import com.michal.kuc.liftctl.model.CallParams;
 import com.michal.kuc.liftctl.model.Carriage;
 import com.michal.kuc.liftctl.model.CarriageInfo;
+import com.michal.kuc.liftctl.model.SendParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -21,10 +20,10 @@ public class MiddlemanService {
     private CarriageService carriageService;
 
 
-    public ResponseEntity<?> addCarriage(CarriageInfo carriageInfo) {
+    public void addCarriage(CarriageInfo carriageInfo) {
         BigInteger id = carriageService.addCarriage(
                 repositoryService.addCarriage(carriageInfo)).getId();
-        return new ResponseEntity<>("New lift carriage with id " + id + " created.", HttpStatus.CREATED);
+        System.out.println("New lift carriage with id " + id + " created.");
     }
 
     public void initialize() {
@@ -33,28 +32,38 @@ public class MiddlemanService {
     }
 
     public void step() {
+        System.out.println("Advancing sim a step forward...");
         carriageService.step();
     }
 
     public void call(CallParams callParams) {
+        System.out.println("Adding call to queue with parameters: " + callParams + "...");
         carriageService.call(callParams);
     }
 
+    public void send(BigInteger id, SendParam floor) {
+        System.out.println("Sending carriage " + id + " to floor " + floor + "...");
+        carriageService.send(id, floor);
+    }
     public List<Carriage> getAllCarriages() {
+        System.out.println("Fetching carriage list...");
         return carriageService.getAllCarriages();
     }
 
     public Carriage updateCarriageById(BigInteger id, CarriageInfo carriageInfo) {
+        System.out.println("Updating carriage " + id + " with name " + carriageInfo.getName() + "...");
         repositoryService.updateCarriageById(id, carriageInfo);
         return carriageService.updateCarriageById(carriageInfo, id).get();
     }
 
     public void removeCarriageById(BigInteger id) {
+        System.out.println("Removing carriage " + id + "...");
         repositoryService.removeCarriageById(id);
         carriageService.removeCarriage(id);
     }
 
     public void removeAllCarriages() {
+        System.out.println("Removing all carriages...");
         repositoryService.removeAllCarriages();
         carriageService.removeAllCarriages();
     }

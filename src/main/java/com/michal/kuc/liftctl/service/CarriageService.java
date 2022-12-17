@@ -3,6 +3,7 @@ package com.michal.kuc.liftctl.service;
 import com.michal.kuc.liftctl.model.CallParams;
 import com.michal.kuc.liftctl.model.Carriage;
 import com.michal.kuc.liftctl.model.CarriageInfo;
+import com.michal.kuc.liftctl.model.SendParam;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -23,6 +24,16 @@ public class CarriageService {
 
     public void call(CallParams callParams) {
         callParamsQueue.add(callParams);
+        System.out.println("Current call queue: " + callParamsQueue);
+        attemptCalls();
+    }
+
+    public void send(BigInteger id, SendParam floor) {
+        for (Carriage car : carriages) {
+            if (car.getId().equals(id)) {
+                car.send(floor);
+            }
+        }
     }
 
     public List<Carriage> getAllCarriages() {
@@ -53,10 +64,16 @@ public class CarriageService {
         carriages.removeAll(carriages);
     }
 
-    public void step() {
-        for (CallParams call : callParamsQueue) {
+    public void attemptCalls() {
+        List<CallParams> tmpCallParamsQueue = List.copyOf(callParamsQueue);
+        for (CallParams call : tmpCallParamsQueue) {
             executeCall(call);
         }
+    }
+    public void step() {
+        System.out.println("Beginning call execution on queue: " + callParamsQueue + "...");
+        attemptCalls();
+        System.out.println("Executing steps for all carriages...");
         for (Carriage car : carriages) {
             car.step();
         }
@@ -65,7 +82,8 @@ public class CarriageService {
     private void executeCall(CallParams callParams) {
         for (Carriage car : carriages) {
             if (car.call(callParams.getFloor(), callParams.getDirection())) {
-                callParamsQueue.remove();
+                System.out.println("Executing call on lift " + car.getId() + "...");
+                callParamsQueue.remove(callParams);
                 return;
             }
         }

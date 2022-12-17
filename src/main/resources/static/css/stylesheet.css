@@ -1,16 +1,22 @@
 html {
     background-color: #202020;
-    font-family: Catamaran;
+    font-family: Roboto;
     color: white;
     margin: 0;
     padding: 0;
 }
+
+a {
+    color: #202020; 
+    text-decoration: inherit;
+  }
 
 .main-container {
     background-color: #707070;
     border-radius: 0.5vw;
     display: flex;
     margin: 1vw;
+    padding: 1vw;
 }
 
 .controls-container {
@@ -22,20 +28,59 @@ html {
 .carriages-container {
     display: flex;
     flex-wrap: wrap;
-    width: 45vw;
+    flex-direction: row;
+    width: auto;
     height: auto;
     margin: auto;
 }
 
 .carriage {
-    width: 9vw;
+    border-radius: 0.5vw;
+    width: fit-content;
     max-height: 9vw;
     height: fit-content;
     margin: 0.5vw;
+    padding: 0.25vw;
     background-color: #3f3f3f;
 }
 
-.button {
+input {
+    border: none;
+    outline: none;
+    background-color: white;
+    padding: 0.25vw;
+    border-radius: 100vw;
+    color: #202020;
+}
+
+input[type=text]:focus, input[type=number]:focus {
+    outline: 2px solid #ffd439;
+}
+
+hr.styled {
+    border: none;
+    height: 1px;
+    background: #3f3f3f;
+    background-image: linear-gradient(to right, #555555, #3f3f3f, #555555);
+}
+
+.vl {
+    border-left: 1px solid #3f3f3f;
+    height: inherit;
+    margin: 0 0.5vw 0 0.5vw;
+  }
+
+  .button {
+    border: none;
+    display: inline-block;
     background-color: #FFDF6C;
     border-radius: 100vw;
+    padding: 0.25vw;
+    margin: 0.1vw;
+    transition-duration: 250ms;
 }
+
+.button:hover {
+    background-color: #ffd439;
+}
+  

@@ -2,6 +2,7 @@ package com.michal.kuc.liftctl.controller;
 
 import com.michal.kuc.liftctl.model.CallParams;
 import com.michal.kuc.liftctl.model.CarriageInfo;
+import com.michal.kuc.liftctl.model.SendParam;
 import com.michal.kuc.liftctl.service.MiddlemanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,51 +24,71 @@ public class WebRestController {
         model.addAttribute("carriages", middlemanService.getAllCarriages());
         model.addAttribute("callFormData", new CallParams());
         model.addAttribute("carFormData", new CarriageInfo());
-        middlemanService.initialize();
+        model.addAttribute("sendFormData", new SendParam());
         return "panel";
     }
 
+    @GetMapping(value = "init")
+    public String initialize() {
+        middlemanService.initialize();
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "step")
+    public String step() {
+        middlemanService.step();
+        return "redirect:/";
+    }
+    @PostMapping(value = "send/{id}")
+    public String sendCarriage(@ModelAttribute(name = "sendFormData") SendParam sendFormData,
+                               @PathVariable(name = "id") BigInteger id,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/";
+        }
+        middlemanService.send(id, sendFormData);
+        return "redirect:/";
+    }
+
     @PostMapping(value = "newCarriage")
-    public String createCarriage(@ModelAttribute(name = "carFormData") CarriageInfo formData, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+    public String createCarriage(@ModelAttribute(name = "carFormData") CarriageInfo carFormData, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
-        middlemanService.addCarriage(formData);
+        middlemanService.addCarriage(carFormData);
         return "redirect:/";
     }
+
     @PostMapping(value = "newCall")
-    public String call(@ModelAttribute(name = "callFormData")CallParams formData, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+    public String call(@ModelAttribute(name = "callFormData") CallParams callFormData, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
-        middlemanService.call(formData);
+        middlemanService.call(callFormData);
         return "redirect:/";
     }
 
-
-    @PostMapping(value = "{id}")
+    @PostMapping(value = "update/{id}")
     public String updateCarriageById(@PathVariable BigInteger id,
-                                     @ModelAttribute(name="carFormData") CarriageInfo formData,
+                                     @ModelAttribute(name = "carFormData") CarriageInfo carFormData,
                                      BindingResult bindingResult,
                                      Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
-        middlemanService.updateCarriageById(id, formData);
+        middlemanService.updateCarriageById(id, carFormData);
         return "redirect:/";
     }
 
-    @DeleteMapping(value = "{id}")
+    @GetMapping(value = "{id}")
     public String removeCarriageById(@PathVariable BigInteger id) {
         middlemanService.removeCarriageById(id);
         return "redirect:/";
     }
 
-    @DeleteMapping
+    @GetMapping(value = "/purge")
     public String purge() {
         middlemanService.removeAllCarriages();
         return "redirect:/";
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.michal.kuc.liftctl.model;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import static com.michal.kuc.liftctl.model.Direction.DOWN;
 import static com.michal.kuc.liftctl.model.Direction.UP;
@@ -14,7 +15,7 @@ public class Carriage {
     private final BigInteger id;
     private String name;
     private Integer currentFloor;
-    private ElevatorQueue targetFloors;
+    private final ArrayList<Integer> targetFloors;
 
     /**
      * Standard constructor
@@ -25,7 +26,7 @@ public class Carriage {
         this.id = id;
         this.name = name;
         currentFloor = 0;
-        targetFloors = new ElevatorQueue();
+        targetFloors = new ArrayList<>();
     }
 
     public String getName() {
@@ -40,7 +41,7 @@ public class Carriage {
         return currentFloor;
     }
 
-    public ElevatorQueue getTargetFloors() {
+    public ArrayList<Integer> getTargetFloors() {
         return targetFloors;
     }
 
@@ -53,7 +54,8 @@ public class Carriage {
      * current state, deletes an entry from the targetFloors queue.
      */
     public void step() {
-        if (targetFloors.size() == 0) {
+        System.out.println(targetFloors);
+        if (targetFloors.isEmpty()) {
             return;
         }
         Direction currentDirection = calculateDirection();
@@ -63,8 +65,8 @@ public class Carriage {
             currentFloor -= 1;
 
         }
-        if (targetFloors.peek().equals(currentFloor)) {
-            targetFloors.remove();
+        if (targetFloors.get(0).equals(currentFloor)) {
+            targetFloors.remove(0);
         }
     }
 
@@ -87,10 +89,14 @@ public class Carriage {
             if (!currentDirection.equals(direction)) {
                 return false;
             }
-            targetFloors.insertFloor(floor, direction);
+            System.out.println("Inserting floor...");
+            insertFloor(floor, direction);
+            System.out.println(targetFloors);
             return true;
         }
-        targetFloors.add(floor);
+        System.out.println("Inserting floor...");
+        targetFloors.add(0, floor);
+        System.out.println(targetFloors);
         return true;
     }
 
@@ -99,9 +105,9 @@ public class Carriage {
      * in the targetFloors queue.
      * @param floor The floor number where the elevator will be sent
      */
-    public void send(Integer floor) {
+    public void send(SendParam floor) {
         if (targetFloors.size() == 0) {
-            targetFloors.add(floor);
+            targetFloors.add(0, floor.getFloor());
             return;
         }
         if (targetFloors.contains(floor)) {
@@ -109,18 +115,18 @@ public class Carriage {
         }
         Direction direction = calculateDirection();
         if (direction.equals(UP)) {
-            if (floor < currentFloor) {
-                targetFloors.addLast(floor);
+            if (floor.getFloor() < currentFloor) {
+                targetFloors.add(targetFloors.size()-1, floor.getFloor());
                 return;
             }
-            targetFloors.insertFloor(floor, direction);
+            insertFloor(floor.getFloor(), direction);
         }
         if (direction.equals(DOWN)){
-            if (floor > currentFloor) {
-                targetFloors.addLast(floor);
+            if (floor.getFloor() > currentFloor) {
+                targetFloors.add(targetFloors.size()-1, floor.getFloor());
                 return;
             }
-            targetFloors.insertFloor(floor, direction);
+            insertFloor(floor.getFloor(), direction);
         }
 
     }
@@ -134,7 +140,32 @@ public class Carriage {
     }
 
     private Direction calculateDirection() {
-        return targetFloors.peek() > currentFloor ? UP : DOWN;
+        System.out.println(targetFloors);
+        return targetFloors.get(0) > currentFloor ? UP : DOWN;
     }
 
+    private void insertFloor(Integer item, Direction direction) {
+        int lastCheckedFloor;
+        if (direction.equals(DOWN)) {
+            lastCheckedFloor = Integer.MAX_VALUE;
+            for (int i = 0; i < targetFloors.size(); i++) {
+                if (item > targetFloors.get(i) || targetFloors.get(i) > lastCheckedFloor) {
+                    targetFloors.add(i, item);
+                    return;
+                }
+                lastCheckedFloor = targetFloors.get(i);
+            }
+            targetFloors.add(targetFloors.size()-1, item);
+        } else {
+            lastCheckedFloor = Integer.MIN_VALUE;
+            for (int i = 0; i < targetFloors.size(); i++) {
+                if (item < targetFloors.get(i) || targetFloors.get(i) < lastCheckedFloor) {
+                    targetFloors.add(i, item);
+                    return;
+                }
+                lastCheckedFloor = targetFloors.get(i);
+            }
+            targetFloors.add(targetFloors.size()-1, item);
+        }
+    }
 }

@@ -1,4 +1,7 @@
 spring:
+    mvc:
+        favicon:
+            enabled: "false"
     data:
         mongodb:
             host: "localhost"
