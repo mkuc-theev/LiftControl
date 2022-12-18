@@ -10,8 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigInteger;
 
+/**
+ * Web controller for interacting with the program from a browser
+ */
 @Controller
 @RequestMapping("/")
 public class WebRestController {
@@ -22,6 +26,7 @@ public class WebRestController {
     @GetMapping
     public String showHome(Model model) {
         model.addAttribute("carriages", middlemanService.getAllCarriages());
+        model.addAttribute("maxCarriages", middlemanService.getMaxCarriages());
         model.addAttribute("callFormData", new CallParams());
         model.addAttribute("carFormData", new CarriageInfo());
         model.addAttribute("sendFormData", new SendParam());
@@ -39,10 +44,12 @@ public class WebRestController {
         middlemanService.step();
         return "redirect:/";
     }
+
     @PostMapping(value = "send/{id}")
     public String sendCarriage(@ModelAttribute(name = "sendFormData") SendParam sendFormData,
                                @PathVariable(name = "id") BigInteger id,
-                               BindingResult bindingResult) {
+                               BindingResult bindingResult,
+                               Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
@@ -51,7 +58,13 @@ public class WebRestController {
     }
 
     @PostMapping(value = "newCarriage")
-    public String createCarriage(@ModelAttribute(name = "carFormData") CarriageInfo carFormData, BindingResult bindingResult) {
+    public String createCarriage(@Valid @ModelAttribute(name = "carFormData") CarriageInfo carFormData,
+                                 BindingResult bindingResult,
+                                 Model model) {
+
+        if (middlemanService.isAtMaxCars()) {
+            return "redirect:/";
+        }
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
@@ -60,7 +73,9 @@ public class WebRestController {
     }
 
     @PostMapping(value = "newCall")
-    public String call(@ModelAttribute(name = "callFormData") CallParams callFormData, BindingResult bindingResult) {
+    public String call(@ModelAttribute(name = "callFormData") CallParams callFormData,
+                       BindingResult bindingResult,
+                       Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }

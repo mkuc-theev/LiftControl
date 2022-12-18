@@ -1,8 +1,11 @@
 spring:
-    mvc:
-        favicon:
-            enabled: "false"
-    data:
-        mongodb:
-            host: "localhost"
-            port: "27017"
+  mvc:
+    favicon:
+      enabled: "false"
+  data:
+    mongodb:
+      host: "localhost"
+      port: "27017"
+liftctl:
+  carriages:
+    maximum: 16

@@ -15,7 +15,8 @@ public class CarriageInfo {
 
     private String name;
 
-    public CarriageInfo() {}
+    public CarriageInfo() {
+    }
 
     public CarriageInfo(BigInteger id, String name) {
         this.id = id;

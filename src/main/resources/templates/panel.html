@@ -2,57 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>LiftControl panel</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <title th:text="|LiftControl panel (${carriages.size}/${maxCarriages})|">Page title</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"/>
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}"/>
-    <link th:href="@{/css/stylesheet.css}" rel="stylesheet" />
+    <link th:href="@{/css/stylesheet.css}" rel="stylesheet"/>
 </head>
 <body>
-    <div class="main-container">
-        <div class="control-container">
-            <a th:href="@{/init}" class="button" text="Initialize">Initialize</a><br/>
-            <a th:href="@{/step}" class="button" text="Next step">Next step</a><br/>
-            <hr class="styled" />
-            <b><span>Call carriage to floor</span></b><br /><br />
-            <form action="#" th:action="@{/newCall}" th:object="${callFormData}" method="post">
-                <b><label for="floor">Floor:  </label></b>
-                <input type="number" id="floor" th:field="*{floor}" required /><br />
-                <b><label>Direction</label></b><br />
-                <input type="radio" name="direction" th:field="*{direction}" value="UP" required />
-                <label> Up</label><br />
-                <input type="radio" name="direction" th:field="*{direction}" value="DOWN" required />
-                <label> Down</label><br />
-                <input type="submit" value="Call" class="button" />
+<div class="titlebar"
+     th:text="|LiftControl panel - ${carriages.size}/${maxCarriages} carriages|">
+    Titlebar and carriage count
+</div>
+<div class="main-container">
+    <div class="control-container">
+        <a th:href="@{/init}" class="button" text="Initialize">Initialize</a><br/>
+        <a th:href="@{/step}" class="button" text="Next step">Next step</a><br/>
+        <hr class="styled"/>
+        <b><span>Call carriage to floor</span></b><br/><br/>
+        <form action="#" th:action="@{/newCall}" th:object="${callFormData}" method="post">
+            <b><label for="floor">Floor: </label></b><br/>
+            <input type="number" id="floor" th:field="*{floor}" placeholder="0" required/><br/><br/>
+            <b><label>Direction:</label></b><br/>
+            <input type="radio" name="direction" th:field="*{direction}" value="UP" required/>
+            <label>Up</label><br/>
+            <input type="radio" name="direction" th:field="*{direction}" value="DOWN" required/>
+            <label>Down</label><br/>
+            <input type="submit" value="Call" class="button"/>
+        </form>
+        <br/>
+        <br/>
+        <hr class="styled"/>
+        <span>Add a carriage</span><br/>
+        <form action="#" th:action="@{/newCarriage}" th:object="${carFormData}" method="post">
+            <label for="name">Carriage name</label><br/>
+            <input errors type="text" id="name" th:field="*{name}" placeholder="Name" required/>
+            <input type="submit" value="Create" class="button"/>
+        </form>
+        <br/><br/>
+        <hr class="styled"/>
+        <a th:href="@{/purge}" class="button">Delete all carriages</a><br/>
+    </div>
+    <div class="vl"></div>
+    <div class="carriage-container">
+        <div class="carriage" th:each="car : ${carriages}">
+            <b><span th:text="${car.getName()}" class="car-name">Carriage name</span></b>
+            <hr class="styled"/>
+            <span>Current floor: </span>
+            <b><span th:text="${car.getCurrentFloor()}">Current floor</span></b><br/>
+            <span>Current queue status: </span>
+            <b><span th:text="${car.getTargetFloors()}">Current queue status</span></b>
+            <hr class="styled"/>
+            <form action="#" th:action="@{/update/{id}(id=${car.getId()})}" th:object="${carFormData}" method="post">
+                <input type="text" th:field="*{name}" placeholder="Name" required/>
+                <input type="submit" value="Rename" class="button"/>
             </form>
-            <hr class="styled" />
-            <span>Add a carriage</span><br />
-            <form action="#" th:action="@{/newCarriage}" th:object="${carFormData}" method="post">
-                <label for="name">Carriage name</label><br />
-                <input type="text" id="name" th:field="*{name}" required />
-                <input type="submit" value="Create" class="button" />
+            <form action="#" th:action="@{/send/{id}(id = ${car.getId()})}" th:object="${sendFormData}" method="post">
+                <input type="number" th:field="*{floor}" placeholder="Floor" required/>
+                <input type="submit" value="Send" class="button"/><br/>
             </form>
-            <a th:href="@{/purge}" class="button">Delete all carriages</a><br />
-        </div>
-        <div class="vl"></div>
-        <div class="carriage-container">
-            <div class="carriage" th:each="car : ${carriages}">
-                <b><span th:text="${car.getName()}">Carriage name</span></b><br />
-                <span>Current floor: </span>
-                <b><span th:text="${car.getCurrentFloor()}">Current floor</span></b><br />
-                <span>Current queue status: </span>
-                <b><span th:text="${car.getTargetFloors()}">Current queue status</span></b><br />
-                <form  action="#" th:action="@{/update/{id}(id=${car.getId()})}" th:object="${carFormData}" method="post">
-                    <input type="text" th:field="*{name}" required/>
-                    <input type="submit" value="Rename" class="button" />
-                </form>
-                <form action="#" th:action="@{/send/{id}(id = ${car.getId()})}" th:object="${sendFormData}" method="post">
-                    <input type="number" th:field="*{floor}" required/>
-                    <input type="submit" value="Send" class="button"/>
-                </form>
-                <a th:href="@{/{id}(id = ${car.getId()})}" class="button">Delete</a>
-            </div>
+            <br/><br/>
+            <hr class="styled"/>
+            <a th:href="@{/{id}(id = ${car.getId()})}" class="button last">Delete</a>
         </div>
     </div>
+</div>
 
 </body>
 </html>

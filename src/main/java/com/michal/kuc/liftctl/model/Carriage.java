@@ -19,7 +19,8 @@ public class Carriage {
 
     /**
      * Standard constructor
-     * @param id The ID number of the lift carriage, usually provided by the repository service
+     *
+     * @param id   The ID number of the lift carriage, usually provided by the repository service
      * @param name The user-defined name of the lift for use in UI
      */
     public Carriage(BigInteger id, String name) {
@@ -73,7 +74,8 @@ public class Carriage {
     /**
      * Represents the pressing of an elevator call button on one of the floors, checks if the carriage is able to
      * fulfill the call, or if another one should be sent.
-     * @param floor The floor at which the carriage was called
+     *
+     * @param floor     The floor at which the carriage was called
      * @param direction The direction in which the user wants to go from the floor they're at
      * @return true if this carriage accepts the call, false otherwise
      */
@@ -103,6 +105,7 @@ public class Carriage {
     /**
      * Represents the pressing of a numbered floor button inside the elevator, adding it to an appropriate place
      * in the targetFloors queue.
+     *
      * @param floor The floor number where the elevator will be sent
      */
     public void send(SendParam floor) {
@@ -110,7 +113,7 @@ public class Carriage {
             targetFloors.add(0, floor.getFloor());
             return;
         }
-        if (targetFloors.contains(floor)) {
+        if (targetFloors.contains(floor.getFloor())) {
             return;
         }
         Direction direction = calculateDirection();
@@ -121,7 +124,7 @@ public class Carriage {
             }
             insertFloor(floor.getFloor(), direction);
         }
-        if (direction.equals(DOWN)){
+        if (direction.equals(DOWN)) {
             if (floor.getFloor() > currentFloor) {
                 targetFloors.add(targetFloors.size(), floor.getFloor());
                 return;
@@ -133,6 +136,7 @@ public class Carriage {
 
     /**
      * Provides the current status of the carriage
+     *
      * @return String containing carriage ID, name and positional status
      */
     public String status() {
