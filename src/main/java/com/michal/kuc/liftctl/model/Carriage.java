@@ -55,7 +55,6 @@ public class Carriage {
      * current state, deletes an entry from the targetFloors queue.
      */
     public void step() {
-        System.out.println(targetFloors);
         if (targetFloors.isEmpty()) {
             return;
         }
@@ -91,14 +90,10 @@ public class Carriage {
             if (!currentDirection.equals(direction)) {
                 return false;
             }
-            System.out.println("Inserting floor...");
             insertFloor(floor, direction);
-            System.out.println(targetFloors);
             return true;
         }
-        System.out.println("Inserting floor...");
         targetFloors.add(0, floor);
-        System.out.println(targetFloors);
         return true;
     }
 
