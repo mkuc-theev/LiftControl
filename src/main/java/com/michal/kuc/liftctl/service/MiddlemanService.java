@@ -90,6 +90,15 @@ public class MiddlemanService {
     }
 
     /**
+     * Fetches list of calls managed by the carriage service
+     *
+     * @return List of currently managed calls
+     */
+    public List<CallParams> getCalls() {
+        return carriageService.getAllCalls();
+    }
+
+    /**
      * Updates given carriage with a new name
      *
      * @param id           ID of carriage to be renamed

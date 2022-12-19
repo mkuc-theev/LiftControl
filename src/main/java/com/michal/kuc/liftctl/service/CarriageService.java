@@ -62,6 +62,16 @@ public class CarriageService {
         return carriages;
     }
 
+
+    /**
+     * Fetches the list of calls that the service is aware of
+     *
+     * @return List representing current state of the call queue
+     */
+    public List<CallParams> getAllCalls() {
+        return callParamsQueue.stream().toList();
+    }
+
     /**
      * Adds a new carriage to the list
      *

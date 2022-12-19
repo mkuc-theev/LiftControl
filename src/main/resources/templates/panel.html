@@ -28,7 +28,11 @@
             <label>Down</label><br/>
             <input type="submit" value="Call" class="button"/>
         </form>
-        <br/>
+        <br/><br />
+        <span>Call queue: [
+        <span th:each="call : ${calls}"
+              th:text="${call.getDirection().name()} == DOWN ? |${call.getFloor}&darr; | : |${call.getFloor}&uarr; |">Call queue</span>
+            ]</span>
         <br/>
         <hr class="styled"/>
         <span>Add a carriage</span><br/>

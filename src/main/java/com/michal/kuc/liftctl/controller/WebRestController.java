@@ -26,6 +26,7 @@ public class WebRestController {
     @GetMapping
     public String showHome(Model model) {
         model.addAttribute("carriages", middlemanService.getAllCarriages());
+        model.addAttribute("calls", middlemanService.getCalls());
         model.addAttribute("maxCarriages", middlemanService.getMaxCarriages());
         model.addAttribute("callFormData", new CallParams());
         model.addAttribute("carFormData", new CarriageInfo());
